@@ -18,7 +18,7 @@ class HotelsController extends Controller
     {
         // $hotels = DB::table('hotels')->get();
         $hotels = Hotel::all(); //pake Eloquent ORM
-        return view('hotel.index', ['data' => $hotels]); //ke folder index.blade.php dan mengirim data dengan key 'data' valuenya hotels
+        return view('frontend.hotel-list', ['data' => $hotels]); //ke folder index.blade.php dan mengirim data dengan key 'data' valuenya hotels
     }
 
     /**

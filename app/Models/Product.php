@@ -19,4 +19,5 @@ class Product extends Model
         return $this->belongsToMany(Transaction::class,'product_transaction','product_id','transaction_id')
         ->withPivot('quantity','subtotal');;
     }
+    
 }
