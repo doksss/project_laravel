@@ -7,17 +7,24 @@
                 <div class="product-detail-top">
                     <div class="row align-items-center">
                         <div class="col-md-5">
-                                <div class="slider-nav-img">
-                                    @if ($product->image == NULL)
-                                    <img  width="200" src="">
-                                    @else
-                                    <img width="200" src="{{asset('images/'.$product->image)}}" alt="Product Image">
-                                    @endif
-                                </div>
+                            <div class="slider-nav-img">
+                                @if ($product->image == NULL)
+                                <img width="200" src="">
+                                @else
+                                @if($product->filenames)
+                                @foreach ($product->filenames as $filename)
+                                <img src="{{asset('products/'.$product->id.'/'.$filename)}}" /><br>
+                                @endforeach
+                                @endif
+
+                                @endif
+                            </div>
                         </div>
                         <div class="col-md-7">
                             <div class="product-content">
-                                <div class="title"><h2>{{$product->name}}</h2></div>
+                                <div class="title">
+                                    <h2>{{$product->name}}</h2>
+                                </div>
                                 <div class="ratting">
                                     <i class="fa fa-star"></i>
                                     <i class="fa fa-star"></i>

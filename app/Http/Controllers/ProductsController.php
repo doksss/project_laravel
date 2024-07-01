@@ -52,12 +52,13 @@ class ProductsController extends Controller
         $data->name = $request->get('name_product'); //ambil name dari textfieldnya
         $data->price = $request->get('price_product'); //ambil name dari textfieldnya
         $data->hotel_id = $request->get('hotel_product'); //ambil name dari textfieldnya
-        $data->image = $request->get('image_product'); //ambil name dari textfieldnya
+        $data->image = ""; //ambil name dari textfieldnya
         $data->available_room = $request->get('available_room'); //ambil name dari textfieldnya
+        $data->type_product = $request->get('typeproduct'); //ambil name dari textfieldnya
         $data->save();
 
         //confirmation
-        return redirect()->route('product.index')->with('status', 'Hooray ! your data is successfully recorded!');
+        return redirect()->route('laralux.index')->with('status', 'Hooray ! your data is successfully recorded!');
     }
 
     /**
@@ -148,7 +149,7 @@ class ProductsController extends Controller
         @File::makeDirectory(public_path() . "/" . $folder);
         $filename = time() . "_" . $file->getClientOriginalName();
         $file->move($folder, $filename);
-        return redirect()->route('product.index')->with('status', 'photo terupload');
+        return redirect()->route('laralux.index')->with('status', 'photo terupload');
     }
     public function uploadPhoto(Request $request)
     {

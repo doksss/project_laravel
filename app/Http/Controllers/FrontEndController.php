@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Hotel;
 use App\Models\Product;
+use App\Models\TypeProduct;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 
 class FrontEndController extends Controller
 {
@@ -11,13 +14,37 @@ class FrontEndController extends Controller
     {
 
         $products = Product::all();
-        return view('frontend.product-list', compact('products'));
+        $hotel = Hotel::all();
+        $typeproduct = TypeProduct::all();
+        foreach ($products as $r) {
+            $directory = public_path('products/' . $r->id);
+            if (File::exists($directory)) {
+                $files = File::files($directory);
+                $filenames = [];
+                foreach ($files as $file) {
+                    $filenames[] = $file->getFilename();
+                }
+                $r['filenames'] = $filenames;
+            }
+        }
+        return view('frontend.product-list', ['products' => $products, 'hotel' => $hotel, 'typeproduct' => $typeproduct]);
     }
 
     public function show($id)
     {
 
         $product = Product::find($id);
+        if ($product) {
+            $directory = public_path('products/' . $product->id);
+            if (File::exists($directory)) {
+                $files = File::files($directory);
+                $filenames = [];
+                foreach ($files as $file) {
+                    $filenames[] = $file->getFilename();
+                }
+                $product->filenames = $filenames; // Attach filenames to the product instance
+            }
+        }
         return view('frontend.product-detail', compact('product'));
     }
     public function addToCart($id)

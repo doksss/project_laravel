@@ -1,75 +1,42 @@
 @extends('layout.frontend')
 @section('content')
+
 <div class="product-view">
     <div class="container-fluid">
         <div class="row">
             <div class="col-lg-8">
                 <div class="row">
                     <div class="col-md-12">
-                        <div class="product-view-top">
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <div class="product-search">
-                                        <input type="email" value="Search">
-                                        <button><i class="fa fa-search"></i></button>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="product-short">
-                                        <div class="dropdown">
-                                            <div class="dropdown-toggle" data-toggle="dropdown">Product short by</div>
-                                            <div class="dropdown-menu dropdown-menu-right">
-                                                <a href="#" class="dropdown-item">Newest</a>
-                                                <a href="#" class="dropdown-item">Popular</a>
-                                                <a href="#" class="dropdown-item">Most sale</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="product-price-range">
-                                        <div class="dropdown">
-                                            <div class="dropdown-toggle" data-toggle="dropdown">Product price range</div>
-                                            <div class="dropdown-menu dropdown-menu-right">
-                                                <a href="#" class="dropdown-item">$0 to $50</a>
-                                                <a href="#" class="dropdown-item">$51 to $100</a>
-                                                <a href="#" class="dropdown-item">$101 to $150</a>
-                                                <a href="#" class="dropdown-item">$151 to $200</a>
-                                                <a href="#" class="dropdown-item">$201 to $250</a>
-                                                <a href="#" class="dropdown-item">$251 to $300</a>
-                                                <a href="#" class="dropdown-item">$301 to $350</a>
-                                                <a href="#" class="dropdown-item">$351 to $400</a>
-                                                <a href="#" class="dropdown-item">$401 to $450</a>
-                                                <a href="#" class="dropdown-item">$451 to $500</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        @if(@session('status'))
+                        <div class="alert alert-success">{{session('status')}}</div>
+                        @endif
+                        <h4>All Product Hotels</h4>
+                        @can('delete-permission',Auth::user())
+                        <a href="#modalCreate" data-toggle="modal" class="btn btn-info">+ New Product</a>
+                        @endcan
                     </div>
 
                     @foreach($products as $p)
-                    <div class="col-md-4">
+                    <div class="col-md-4" id="card_{{$p->id}}">
                         <div class="product-item">
                             <div class="product-title">
                                 <a href="{{route('laralux.show',$p->id)}}">{{$p->name}}</a>
-                                <div class="ratting">
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                </div>
                             </div>
                             <div class="product-image">
                                 <a href="product-detail.html">
-                                    <img src="{{asset('images/'.$p->image)}}" alt="Product Image">
+                                    @if($p->filenames)
+                                    @foreach ($p->filenames as $filename)
+                                    <img src="{{asset('products/'.$p->id.'/'.$filename)}}" /><br>
+                                    @endforeach
+                                    @endif
+                                    <h5>Tipe : {{$p->typeproduct->nama_tipe}}</h5>
                                 </a>
                                 <div class="product-action">
                                     <a href="#"><i class="fa fa-cart-plus"></i></a>
-                                    <a href="#"><i class="fa fa-heart"></i></a>
-                                    <a href="#"><i class="fa fa-search"></i></a>
+                                    <a href="{{ url('product/uploadPhoto/'.$p->id) }}"><i class="fa fa-image"></i></a>
+                                    @can('delete-permission',Auth::user())
+                                    <a href="#" value="DeleteNoReload" onclick="if(confirm('Are you sure to delete {{$p->id}} - {{$p->name}} ?')) deleteDataRemoveCard({{$p->id}})"><i class="fa fa-trash"></i></a>
+                                    @endcan
                                 </div>
                             </div>
                             <div class="product-price">
@@ -79,166 +46,75 @@
                         </div>
                     </div>
                     @endforeach
-
-                </div>
-
-                <!-- Pagination Start -->
-                <div class="col-md-12">
-                    <nav aria-label="Page navigation example">
-                        <ul class="pagination justify-content-center">
-                            <li class="page-item disabled">
-                                <a class="page-link" href="#" tabindex="-1">Previous</a>
-                            </li>
-                            <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                            <li class="page-item"><a class="page-link" href="#">2</a></li>
-                            <li class="page-item"><a class="page-link" href="#">3</a></li>
-                            <li class="page-item">
-                                <a class="page-link" href="#">Next</a>
-                            </li>
-                        </ul>
-                    </nav>
-                </div>
-                <!-- Pagination Start -->
-            </div>
-
-            <!-- Side Bar Start -->
-            <div class="col-lg-4 sidebar">
-                <div class="sidebar-widget category">
-                    <h2 class="title">Category</h2>
-                    <nav class="navbar bg-light">
-                        <ul class="navbar-nav">
-                            <li class="nav-item">
-                                <a class="nav-link" href="#"><i class="fa fa-female"></i>Fashion & Beauty</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#"><i class="fa fa-child"></i>Kids & Babies Clothes</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#"><i class="fa fa-tshirt"></i>Men & Women Clothes</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#"><i class="fa fa-mobile-alt"></i>Gadgets & Accessories</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#"><i class="fa fa-microchip"></i>Electronics & Accessories</a>
-                            </li>
-                        </ul>
-                    </nav>
-                </div>
-
-                <div class="sidebar-widget widget-slider">
-                    <div class="sidebar-slider normal-slider">
-                        <div class="product-item">
-                            <div class="product-title">
-                                <a href="#">Product Name</a>
-                                <div class="ratting">
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                </div>
-                            </div>
-                            <div class="product-image">
-                                <a href="product-detail.html">
-                                    <img src="img/product-10.jpg" alt="Product Image">
-                                </a>
-                                <div class="product-action">
-                                    <a href="#"><i class="fa fa-cart-plus"></i></a>
-                                    <a href="#"><i class="fa fa-heart"></i></a>
-                                    <a href="#"><i class="fa fa-search"></i></a>
-                                </div>
-                            </div>
-                            <div class="product-price">
-                                <h3><span>$</span>99</h3>
-                                <a class="btn" href=""><i class="fa fa-shopping-cart"></i>Buy Now</a>
-                            </div>
-                        </div>
-                        <div class="product-item">
-                            <div class="product-title">
-                                <a href="#">Product Name</a>
-                                <div class="ratting">
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                </div>
-                            </div>
-                            <div class="product-image">
-                                <a href="product-detail.html">
-                                    <img src="img/product-9.jpg" alt="Product Image">
-                                </a>
-                                <div class="product-action">
-                                    <a href="#"><i class="fa fa-cart-plus"></i></a>
-                                    <a href="#"><i class="fa fa-heart"></i></a>
-                                    <a href="#"><i class="fa fa-search"></i></a>
-                                </div>
-                            </div>
-                            <div class="product-price">
-                                <h3><span>$</span>99</h3>
-                                <a class="btn" href=""><i class="fa fa-shopping-cart"></i>Buy Now</a>
-                            </div>
-                        </div>
-                        <div class="product-item">
-                            <div class="product-title">
-                                <a href="#">Product Name</a>
-                                <div class="ratting">
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                </div>
-                            </div>
-                            <div class="product-image">
-                                <a href="product-detail.html">
-                                    <img src="img/product-8.jpg" alt="Product Image">
-                                </a>
-                                <div class="product-action">
-                                    <a href="#"><i class="fa fa-cart-plus"></i></a>
-                                    <a href="#"><i class="fa fa-heart"></i></a>
-                                    <a href="#"><i class="fa fa-search"></i></a>
-                                </div>
-                            </div>
-                            <div class="product-price">
-                                <h3><span>$</span>99</h3>
-                                <a class="btn" href=""><i class="fa fa-shopping-cart"></i>Buy Now</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="sidebar-widget brands">
-                    <h2 class="title">Our Brands</h2>
-                    <ul>
-                        <li><a href="#">Nulla </a><span>(45)</span></li>
-                        <li><a href="#">Curabitur </a><span>(34)</span></li>
-                        <li><a href="#">Nunc </a><span>(67)</span></li>
-                        <li><a href="#">Ullamcorper</a><span>(74)</span></li>
-                        <li><a href="#">Fusce </a><span>(89)</span></li>
-                        <li><a href="#">Sagittis</a><span>(28)</span></li>
-                    </ul>
-                </div>
-
-                <div class="sidebar-widget tag">
-                    <h2 class="title">Tags Cloud</h2>
-                    <a href="#">Lorem ipsum</a>
-                    <a href="#">Vivamus</a>
-                    <a href="#">Phasellus</a>
-                    <a href="#">pulvinar</a>
-                    <a href="#">Curabitur</a>
-                    <a href="#">Fusce</a>
-                    <a href="#">Sem quis</a>
-                    <a href="#">Mollis metus</a>
-                    <a href="#">Sit amet</a>
-                    <a href="#">Vel posuere</a>
-                    <a href="#">orci luctus</a>
-                    <a href="#">Nam lorem</a>
                 </div>
             </div>
-            <!-- Side Bar End -->
         </div>
     </div>
 </div>
 @endsection
+
+<div class="modal fade" id="modalCreate" tabindex="-1" role="basic" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                <h4 class="modal-title">Add New Product</h4>
+            </div>
+            <div class="modal-body">
+                <form method="post" action="{{route('product.store')}}">
+                    @csrf
+                    <div class="form-group">
+                        <label for="ProductName">Name of Product</label>
+                        <input type="text" class="form-control" id="exampleInputProductName" aria-describedby="nameProduct" placeholder="Enter Name Of Product" name="name_product">
+                        <small id="nameHelp" class="form-text text-muted">Please write down the name of product here.</small><br><br>
+                        <label for="ProductPrice">Price of Product</label>
+                        <input type="text" class="form-control" id="exampleInputProductPrice" placeholder="Enter Product Price" name="price_product">
+                        <small id="priceHelp" class="form-text text-muted">Please write down the price of product here.</small><br><br>
+
+                        <label for="hotel">Choose Hotel Name:</label>
+                        <select name="hotel_product" id="hotels">
+                            @foreach ($hotel as $h)
+                            <option value='{{$h->id}}'>{{$h->name}}</option>
+                            @endforeach
+                        </select><br><br>
+
+                        <label for="hotel">Choose Type of Product:</label>
+                        <select name="typeproduct" id="typeproducts">
+                            @foreach ($typeproduct as $tp)
+                            <option value='{{$tp->id}}'>{{$tp->nama_tipe}}</option>
+                            @endforeach
+                        </select>
+
+                        <br><br>
+
+                        <label for="ProductAvailable">Available Room</label>
+                        <input type="text" class="form-control" id="AvailableRoom" placeholder="Enter Total Available Room" name="available_room">
+                        <small id="RoomHelp" class="form-text text-muted">Please write down the Total of Available Room here.</small><br><br>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function deleteDataRemoveCard(prod_id) {
+        $.ajax({
+            type: 'POST',
+            url: '{{route("product.deleteData")}}',
+            data: {
+                '_token': '<?php echo csrf_token() ?>',
+                'id': prod_id
+            },
+            success: function(data) {
+                if (data.status == "oke") {
+                    $('#card_' + prod_id).remove();
+                }
+            }
+        });
+    }
+</script>

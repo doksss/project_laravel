@@ -14,10 +14,13 @@ class Product extends Model
     {
         return $this->belongsTo(Hotel::class);//ini sesuai nama model ini hanya berlaku di Eloquent ORM model
     }
+    public function typeproduct():BelongsTo{
+        return $this->belongsTo(TypeProduct::class, 'type_product');
+    }
     public function transactions():BelongsToMany
     {
         return $this->belongsToMany(Transaction::class,'product_transaction','product_id','transaction_id')
         ->withPivot('quantity','subtotal');;
     }
-    
+
 }

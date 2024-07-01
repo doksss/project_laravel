@@ -16,7 +16,7 @@ class TypesController extends Controller
     public function index()
     {
         $data = Type::all();
-        return view('type.index',compact('data'));
+        return view('frontend.type-list',compact('data'));
     }
 
     /**

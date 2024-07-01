@@ -5,11 +5,13 @@ use App\Http\Controllers\FrontEndController;
 use App\Http\Controllers\HotelsController;
 use App\Http\Controllers\ProductsController;
 use App\Http\Controllers\TransactionController;
+use App\Http\Controllers\TypeProductController;
 use App\Http\Controllers\TypesController;
 use App\Models\Customer;
 use App\Models\Product;
 use App\Models\Transaction;
 use App\Models\Type;
+use App\Models\TypeProduct;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -77,6 +79,7 @@ Route::middleware(['auth'])->group(function(){
     Route::resource("product",ProductsController::class);
     Route::resource("type",TypesController::class);
     Route::resource('transaction',TransactionController::class);
+    Route::resource('typeproduct',TypeProductController::class);
 });
 
 Route::resource("customer",CustomerController::class);
@@ -89,6 +92,8 @@ Route::post("/hotel/showInfo",[HotelsController::class, 'showInfo'])->name("hote
 
 //Edit delete with Modal
 Route::post("customtype/getEditForm",[TypesController::class, 'getEditForm'])->name("type.getEditForm");
+Route::post("hotel/getEditForm",[HotelsController::class, 'getEditForm'])->name("hotel.getEditForm");
+Route::post("typeProduct/getEditForm",[TypeProductController::class, 'getEditForm'])->name("typeproduct.getEditForm");
 Route::post("customcustomer/getEditForm",[CustomerController::class, 'getEditForm'])->name("customer.getEditForm");
 Route::post("customproduct/getEditForm",[ProductsController::class, 'getEditForm'])->name("product.getEditForm");
 Route::post("customtype/getEditFormB",[TypesController::class, 'getEditFormB'])->name("type.getEditFormB");
@@ -98,6 +103,7 @@ Route::post("customtype/deleteData",[TypesController::class, 'deleteData'])->nam
 Route::post("customtproduct/deleteData",[ProductsController::class, 'deleteData'])->name("product.deleteData");
 Route::post("customcustomer/deleteData",[CustomerController::class, 'deleteData'])->name("customer.deleteData");
 Route::post("customtransaction/deleteData",[TransactionController::class, 'deleteData'])->name("transaction.deleteData");
+Route::post("typeProduct/deleteData",[TypeProductController::class, 'deleteData'])->name("typeproduct.deleteData");
 
 
 

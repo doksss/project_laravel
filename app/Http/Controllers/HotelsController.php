@@ -18,7 +18,19 @@ class HotelsController extends Controller
     {
         // $hotels = DB::table('hotels')->get();
         $hotels = Hotel::all(); //pake Eloquent ORM
-        return view('frontend.hotel-list', ['data' => $hotels]); //ke folder index.blade.php dan mengirim data dengan key 'data' valuenya hotels
+        $type = Type::all();
+        return view('frontend.hotel-list', ['data' => $hotels, 'type'=>$type]); //ke folder index.blade.php dan mengirim data dengan key 'data' valuenya hotels
+    }
+
+    public function getEditForm(Request $request)
+    {
+        $id = $request->id;
+        $data = Hotel::find($id);
+        $type = Type::all();
+        return response()->json(array(
+            'status' => 'oke',
+            'msg' => view('hotel.getEditForm', ['data' => $data, 'type' => $type])->render()
+        ), 200);
     }
 
     /**
@@ -38,9 +50,9 @@ class HotelsController extends Controller
         $data = new Hotel();
         $data->name = $request->get('hotel_name');
         $data->address = $request->get('hotel_address'); //ambil name dari textfieldnya
-        $data->city = $request->get('hotel_city'); //ambil name dari textfieldnya
+        $data->nomor_telepon = $request->get('hotel_phone'); //ambil name dari textfieldnya
         $data->hotel_type = $request->get('hotel_type');
-        $data->image = $request->get('hotel_image');
+        $data->email = $request->get('hotel_email');
         $data->save();
 
         //confirmation
@@ -73,8 +85,9 @@ class HotelsController extends Controller
         $data = Hotel::find($id);
         $data->name = $request->get('hotel_name');
         $data->address = $request->get('hotel_address'); //ambil name dari textfieldnya
-        $data->city = $request->get('hotel_city'); //ambil name dari textfieldnya
+        $data->nomor_telepon = $request->get('hotel_phone'); //ambil name dari textfieldnya
         $data->hotel_type = $request->get('hotel_type');
+        $data->email = $request->get('hotel_email');
         $data->update();
         return redirect()->route('hotels.index')->with('status', 'Yesss! your data is successfully updated!');
     }
