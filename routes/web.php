@@ -12,6 +12,7 @@ use App\Models\Product;
 use App\Models\Transaction;
 use App\Models\Type;
 use App\Models\TypeProduct;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -140,3 +141,7 @@ Route::middleware(['auth'])->group(function(){
     Route::get('/laralux/{laralux}', [FrontEndController::class, 'show'])->name('laralux.show');
 });
 
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
