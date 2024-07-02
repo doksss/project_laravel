@@ -61,16 +61,20 @@
                                                     </div>
                                                 </td>
                                                 <td>
+                                                    @can('edit', $d)
                                                     <a class="btn btn-warning" href="{{route('transaction.edit',$d->id)}}">Edit</a>
                                                     <a class="btn btn-warning" href="#modalEditA" data-toggle="modal" onclick="getEditForm({{$d->id}})">Edit Type A</a>
+                                                    @endcan
                                                 </td>
                                                 <td>
+                                                    @can('delete', $d)
                                                     <form method="post" action="{{route('transaction.destroy',$d->id)}}">
                                                         @csrf
                                                         @method('delete')
                                                         <input type="submit" value="Delete" onclick="return confirm('Are you sure?')" class="btn btn-danger"></input>
                                                     </form>
                                                     <a class="btn btn-danger" href="#" value="DeleteNoReload" onclick="if(confirm('Are you sure to delete {{$d->id}} ?')) deleteDataRemoveTR({{$d->id}})">Delete without reload</a>
+                                                    @endcan                                                
                                                 </td>
                                             </tr>
                                             @endforeach
