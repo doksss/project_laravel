@@ -7,6 +7,7 @@ use App\Http\Controllers\ProductsController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\TypeProductController;
 use App\Http\Controllers\TypesController;
+use App\Http\Controllers\ProductFacilityController;
 use App\Models\Customer;
 use App\Models\Product;
 use App\Models\Transaction;
@@ -84,6 +85,7 @@ Route::middleware(['auth'])->group(function(){
     Route::resource('typeproduct',TypeProductController::class);
     Route::resource('laralux',FrontEndController::class);
     Route::resource("customer",CustomerController::class);
+    Route::resource("productfacility",ProductFacilityController::class);
 });
 
 

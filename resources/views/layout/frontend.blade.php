@@ -59,7 +59,7 @@
                         <a href="{{route('typeproduct.index')}}" class="nav-item nav-link">Tipe Product</a>
                         <a href="{{route('customer.index')}}" class="nav-item nav-link">Customer</a>
                         <a href="{{route('transaction.index')}}" class="nav-item nav-link">Transaction</a>
-                        
+                        <a href="{{route('productfacility.index')}}" class="nav-item nav-link">Facility</a>
                     </div>
                     <div class="navbar-nav ml-auto">
                         <div class="nav-item dropdown">
