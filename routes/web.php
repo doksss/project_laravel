@@ -13,6 +13,7 @@ use App\Models\Transaction;
 use App\Models\Type;
 use App\Models\TypeProduct;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
 
 /*
 |--------------------------------------------------------------------------
