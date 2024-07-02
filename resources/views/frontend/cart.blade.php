@@ -39,6 +39,7 @@
                             </div>
                         </td>
                         <td>{{ 'IDR '.$item['quantity']* $item['price'] }}</td>
+                        <!-- <td>{{ $item['type_product'] }}</td> -->
                         <td><a class="btn btn-danger" href="{{route('delFromCart',$item['id'])}}"><i class="fa fa-trash"></i></a></td>
                     </tr>
                     @php
@@ -57,4 +58,68 @@
         </div>
     </div>
 </div>
+<div class="col-lg-4">
+    <div class="cart-page-inner">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="coupon">
+                    <input type="text" placeholder="Coupon Code">
+                    <button>Apply Code</button>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="cart-summary">
+                    <div class="cart-content">
+                        <h1>Cart Summary</h1>
+                        <h4>Sub Total: <span>{{'IDR ' . $total}}</span></h4>
+                        @php
+                        $tax = 11/100 * $total;
+                        $total += $tax;
+                        @endphp
+                        <h4>Tax: <span>{{'IDR ' . $tax}}</span></h4>
+                        <h2>Grand Total: <span>{{ 'IDR ' . $total }}</span></h2>
+                    </div>
+                    <div class="cart-btn">
+                        <a class="btn btn-xs" href="{{ route('laralux.index') }}">Continue Shopping</button>
+                            <a class="btn btn-xs" href="{{ route('checkout') }}">Checkout</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@endsection
+
+@section('js')
+<script>
+    function redQty(id) {
+        $.ajax({
+            type: 'POST',
+            url: '{{route("redQty")}}',
+            data: {
+                '_token': '<?php echo csrf_token() ?>',
+                'id': id
+            },
+            success: function(data) {
+                location.reload();
+            }
+        });
+    }
+
+    function addQty(id) {
+        $.ajax({
+            type: 'POST',
+            url: '{{route("addQty")}}',
+            data: {
+                '_token': '<?php echo csrf_token() ?>',
+                'id': id
+            },
+            success: function(data) {
+                location.reload();
+            }
+        });
+    }
+</script>
 @endsection

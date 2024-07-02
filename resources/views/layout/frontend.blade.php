@@ -53,27 +53,22 @@
 
                 <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
                     <div class="navbar-nav mr-auto">
-                        <a href="index.html" class="nav-item nav-link">Home</a>
-                        <a href="product-list.html" class="nav-item nav-link">Products</a>
-                        <a href="product-detail.html" class="nav-item nav-link">Product Detail</a>
-                        <a href="cart.html" class="nav-item nav-link">Cart</a>
-                        <a href="checkout.html" class="nav-item nav-link">Checkout</a>
-                        <a href="my-account.html" class="nav-item nav-link">My Account</a>
-                        <div class="nav-item dropdown">
-                            <a href="#" class="nav-link dropdown-toggle active" data-toggle="dropdown">More Pages</a>
-                            <div class="dropdown-menu">
-                                <a href="wishlist.html" class="dropdown-item">Wishlist</a>
-                                <a href="login.html" class="dropdown-item active">Login & Register</a>
-                                <a href="contact.html" class="dropdown-item">Contact Us</a>
-                            </div>
-                        </div>
+                        <a href="{{route('hotels.index')}}" class="nav-item nav-link">Hotel</a>
+                        <a href="{{route('type.index')}}" class="nav-item nav-link">Tipe Hotel</a>
+                        <a href="{{route('product.index')}}" class="nav-item nav-link">Product</a>
+                        <a href="{{route('typeproduct.index')}}" class="nav-item nav-link">Tipe Product</a>
+                        <a href="{{route('customer.index')}}" class="nav-item nav-link">Customer</a>
+                        <a href="{{route('transaction.index')}}" class="nav-item nav-link">Transaction</a>
+                        
                     </div>
                     <div class="navbar-nav ml-auto">
                         <div class="nav-item dropdown">
-                            <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">User Account</a>
+                            <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">{{Auth::user()->name}}</a>
                             <div class="dropdown-menu">
-                                <a href="#" class="dropdown-item">Login</a>
-                                <a href="#" class="dropdown-item">Register</a>
+                                <form action="{{route('logout')}}" method="post">
+                                    @csrf
+                                    <input type="submit" value="logout" class="btn btn-danger">
+                                </form>
                             </div>
                         </div>
                     </div>
@@ -100,10 +95,6 @@
                 </div>
                 <div class="col-md-3">
                     <div class="user">
-                        <a href="wishlist.html" class="btn wishlist">
-                            <i class="fa fa-heart"></i>
-                            <span>(0)</span>
-                        </a>
                         <a href="{{route('cart')}}" class="btn cart">
                             <i class="fa fa-shopping-cart"></i>
                             <span>
@@ -125,9 +116,12 @@
     <div class="breadcrumb-wrap">
         <div class="container-fluid">
             <ul class="breadcrumb">
-                <li class="breadcrumb-item"><a href="#">Home</a></li>
-                <li class="breadcrumb-item"><a href="#">Products</a></li>
-                <li class="breadcrumb-item active">Login & Register</li>
+                <li class="breadcrumb-item"><a href="{{route('hotels.index')}}">Hotel</a></li>
+                <li class="breadcrumb-item"><a href="{{route('type.index')}}">Tipe Hotel</a></li>
+                <li class="breadcrumb-item"><a href="{{route('laralux.index')}}">Produk</a></li>
+                <li class="breadcrumb-item"><a href="{{route('typeproduct.index')}}">Tipe Produk</a></li>
+                <li class="breadcrumb-item"><a href="{{route('customer.index')}}">Customer</a></li>
+                <li class="breadcrumb-item"><a href="{{route('transaction.index')}}">Transaction</a></li>
             </ul>
         </div>
     </div>

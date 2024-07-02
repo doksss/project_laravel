@@ -7,8 +7,10 @@ use App\Models\Product;
 use App\Models\Transaction;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use PDOException;
+use Illuminate\Support\Facades\Auth;
 
 class TransactionController extends Controller
 {
@@ -141,4 +143,30 @@ class TransactionController extends Controller
         }
     
     }
+
+    public function checkout(){
+        $cart = session('cart');
+        $user = Auth::user();
+
+        $t = new Transaction();
+        $t->user_id = $user->id;
+        $t->customer_id = 1;
+        $t->transaction_date = Carbon::now()->toDateTimeString();
+
+        $t->save();
+        $idTransactionNew = $t->id;
+
+
+        $totalpoint = $t->insertProducts($cart,$idTransactionNew);
+        
+        $cust = Customer::find(1);
+        $point = $cust->point;
+        $totalpoint+=$point;
+
+        DB::update('update customers set point=? where id=?',[$totalpoint, 1]);
+
+        session()->forget('cart');
+        return redirect()->route('laralux.index')->with('status','checkout berhasil');
+    }
+
 }

@@ -25,10 +25,12 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-    // return view('front');
-})->name("front");
+// Route::get('/', function () {
+//     return view('frontend.hotel-list');
+//     // return view('front');
+// })->name("front");
+
+
 
 Route::get('/user/{id?}', function ($id="aldo") {
     if($id == "aldo"){
@@ -80,9 +82,11 @@ Route::middleware(['auth'])->group(function(){
     Route::resource("type",TypesController::class);
     Route::resource('transaction',TransactionController::class);
     Route::resource('typeproduct',TypeProductController::class);
+    Route::resource('laralux',FrontEndController::class);
+    Route::resource("customer",CustomerController::class);
 });
 
-Route::resource("customer",CustomerController::class);
+
 Route::get('report/availableHotelRooms',[HotelsController::class,'availableHotelRoom'])->name('reportShowHotel');//disebelah nama class ikutin 
 Route::get('report/hotel/avgPriceByHotelType',[HotelsController::class,'averagePriceHotel'])->name('reportAvgPriceHotel');//disebelah nama class ikutin 
 //nama function di HotelsControllernya
@@ -120,10 +124,11 @@ Route::post('product/simpanPhoto', [ProductsController::class, 'simpanPhoto']);
 Route::post('product/delPhoto', [ProductsController::class, 'delPhoto']);
 
 
-Route::get('/laralux', [FrontEndController::class, 'index'])->name('laralux.index');
-Route::get('/laralux/{laralux}', [FrontEndController::class, 'show'])->name('laralux.show');
+// Route::get('/laralux', [FrontEndController::class, 'index'])->name('laralux.index');
+
 
 Route::middleware(['auth'])->group(function(){
+    Route::get('/', [FrontEndController::class, 'index'])->name('laralux.index');
     Route::get('laralux/user/cart',function(){
         return view('frontend.cart');
     })->name('cart');
@@ -131,5 +136,7 @@ Route::middleware(['auth'])->group(function(){
     Route::get('laralux/cart/delete/{id}',[FrontEndController::class,'deleteFromCart'])->name('delFromCart');
     Route::post('laralux/cart/addQty',[FrontEndController::class,'addQuantity'])->name('addQty');
     Route::post('laralux/cart/reduceQty',[FrontEndController::class,'reduceQuantity'])->name('redQty');
+    Route::get('laralux/cart/checkout',[TransactionController::class,'checkout'])->name('checkout');
+    Route::get('/laralux/{laralux}', [FrontEndController::class, 'show'])->name('laralux.show');
 });
 

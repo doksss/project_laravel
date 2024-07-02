@@ -1,49 +1,70 @@
-@extends('layout.conquer')
+@extends('layout.frontend')
 @section('content')
-@if(@session('status'))
-<div class="alert alert-success">{{session('status')}}</div>
-@endif
-<a href="{{route('customer.create')}}" class="btn btn-success">+ New Customer</a>
-<a href="#modalCreate" data-toggle="modal" class="btn btn-info">+ New Customer (With Modals)</a>
-<h2>Daftar Customer</h2>
-<table class="table">
-    <thead>
-        <tr>
-            <th>ID</th>
-            <th>Name</th>
-            <th>Address</th>
-            <th>Created At</th>
-            <th>Updated At</th>
-            <th>Edit</th>
-            <th>Delete</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach($data as $d)
-        <tr id="tr_{{$d->id}}">
-            <td>{{$d->id}}</td>
-            <td>{{$d->name}}</td>
-            <td>{{$d->address}}</td>
-            <td>{{$d->created_at}}</td>
-            <td>{{$d->updated_at}}</td>
-            <td>
-                <a class="btn btn-warning" href="{{route('customer.edit',$d->id)}}">Edit</a>
-                <a class="btn btn-warning" href="#modalEditA" data-toggle="modal" onclick="getEditForm({{$d->id}})">Edit Type A</a>
-            </td>
-            <td>
-                <form method="post" action="{{route('customer.destroy',$d->id)}}">
-                    @csrf
-                    @method('delete')
-                    <input type="submit" value="Delete" onclick="return confirm('Are you sure?')" class="btn btn-danger"></input>
-                </form>
-                <a class="btn btn-danger" href="#" value="DeleteNoReload" onclick="if(confirm('Are you sure to delete {{$d->id}} - {{$d->name}} ?')) deleteDataRemoveTR({{$d->id}})">Delete without reload</a>
-            </td>
+<div class="product-view">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="product-view-top">
+                            <div class="row">
+                                @can('delete-permission',Auth::user())
+                                <a href="#modalCreate" data-toggle="modal" class="btn btn-info">+ New Customer</a>
+                                @endcan
+                                <div class="container">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th>ID</th>
+                                                <th>Name</th>
+                                                <th>Address</th>
+                                                <th>Created At</th>
+                                                <th>Updated At</th>
+                                                <th>Point</th>
+                                                <th>Edit</th>
+                                                <th>Delete</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach($data as $d)
+                                            <tr>
+                                                <td>{{$d->id}}</td>
+                                                <td>{{$d->name}}</td>
+                                                <td>{{$d->address}}</td>
+                                                <td>{{$d->created_at}}</td>
+                                                <td>{{$d->updated_at}}</td>
+                                                <td>{{$d->point}}</td>
+                                                @can('delete-permission',Auth::user())
+                                                <td>
+                                                    <!-- <a class="btn btn-warning" href="{{route('hotels.edit',$d->id)}}">Edit</a> -->
+                                                    <div class="btn-group">
+                                                        <a class="btn btn-warning" href="#modalEditA" data-toggle="modal" onclick="getEditForm({{$d->id}})">Edit</a>
+                                                    </div>
+                                                </td>
 
-        </tr>
-        @endforeach
-    </tbody>
-</table>
 
+                                                <td>
+                                                    <form method="post" action="{{route('hotels.destroy',$d->id)}}">
+                                                        @csrf
+                                                        @method('delete')
+                                                        <input type="submit" value="Delete" onclick="return confirm('Are you sure?')" class="btn btn-danger"></input>
+                                                    </form>
+                                                </td>
+                                                @endcan
+                                            </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Side Bar End -->
+            </div>
+        </div>
+    </div>
+</div>
 <div class="modal fade" id="modalCreate" tabindex="-1" role="basic" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -75,7 +96,7 @@
 
 <div class="modal fade" id="modalEditA" tabindex="-1" role="basic" aria-hidden="true">
     <div class="modal-dialog modal-wide">
-        <div class="modal-content"> 
+        <div class="modal-content">
             <div class="modal-body" id="modalContent">
             </div>
         </div>
@@ -84,38 +105,35 @@
 
 @section('js')
 <script>
-    function getEditForm(cust_id)
-    {
+    function getEditForm(cust_id) {
         $.ajax({
-            type:'POST',
-            url:'{{route("customer.getEditForm")}}',
-            data:{
-                '_token' : '<?php echo csrf_token() ?>',
+            type: 'POST',
+            url: '{{route("customer.getEditForm")}}',
+            data: {
+                '_token': '<?php echo csrf_token() ?>',
                 'id': cust_id
             },
-            success: function(data){
+            success: function(data) {
                 $('#modalContent').html(data.msg)
             }
         });
     }
 
-    function deleteDataRemoveTR(cust_id)
-    {
+    function deleteDataRemoveTR(cust_id) {
         $.ajax({
-            type:'POST',
-            url:'{{route("customer.deleteData")}}',
-            data:{
-                '_token' : '<?php echo csrf_token() ?>',
+            type: 'POST',
+            url: '{{route("customer.deleteData")}}',
+            data: {
+                '_token': '<?php echo csrf_token() ?>',
                 'id': cust_id
             },
-            success: function(data){
-                if(data.status=="oke"){
-                    $('#tr_'+cust_id).remove();
+            success: function(data) {
+                if (data.status == "oke") {
+                    $('#tr_' + cust_id).remove();
                 }
             }
         });
     }
-
 </script>
 @endsection
 @endsection

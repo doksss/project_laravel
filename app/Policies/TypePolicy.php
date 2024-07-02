@@ -21,4 +21,10 @@ class TypePolicy
         ? Response::allow()
         :Response::deny('You must be an administrator'));
     }
+
+    public function point(User $user){
+        return ($user->role=='guest'
+        ? Response::allow()
+        :Response::deny('Guest Only!'));
+    }
 }
