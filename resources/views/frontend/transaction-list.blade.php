@@ -61,13 +61,13 @@
                                                     </div>
                                                 </td>
                                                 <td>
-                                                    @can('edit', $d)
+                                                    @can('delete-permission',Auth::user())
                                                     <a class="btn btn-warning" href="{{route('transaction.edit',$d->id)}}">Edit</a>
                                                     <a class="btn btn-warning" href="#modalEditA" data-toggle="modal" onclick="getEditForm({{$d->id}})">Edit Type A</a>
                                                     @endcan
                                                 </td>
                                                 <td>
-                                                    @can('delete', $d)
+                                                    @can('delete-permission',Auth::user())
                                                     <form method="post" action="{{route('transaction.destroy',$d->id)}}">
                                                         @csrf
                                                         @method('delete')
