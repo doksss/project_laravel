@@ -24,7 +24,7 @@ class TransactionController extends Controller
         $product = Product::all();
         $user = User::all();
         // dd($transactions);
-        return view('transaction.index',['data'=>$transactions,'customer'=>$customer,'product'=>$product,'user'=>$user]); //ke folder index.blade.php dan mengirim data dengan key 'data' valuenya hotels
+        return view('frontend.transaction-list',['data'=>$transactions,'customer'=>$customer,'product'=>$product,'user'=>$user]); //ke folder index.blade.php dan mengirim data dengan key 'data' valuenya hotels
     }
 
     /**
