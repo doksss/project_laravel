@@ -26,11 +26,7 @@
                                     <h2>{{$product->name}}</h2>
                                 </div>
                                 <div class="ratting">
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
+                                    <h2>{{$product->typeproduct->nama_tipe}}</h2>
                                 </div>
                                 <div class="price">
                                     <h4>Price:</h4>

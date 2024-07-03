@@ -33,8 +33,8 @@ class CustomerController extends Controller
     {
         $data = new User();
         $data->name = $request->get('name_cust');
-        $data->address = $request->get('address_cust');
-        $data->role = 'guest'; // ensure the role is set to guest
+        $data->email = $request->get('address_cust');
+        $data->role = 'guest';
         $data->save();
 
         //confirmation
@@ -65,7 +65,7 @@ class CustomerController extends Controller
     {
         $data = User::where('role', 'guest')->FindOrFail($id);
         $data->name = $request->get('name_cust');
-        $data->address = $request->get('address_cust');
+        $data->email = $request->get('address_cust');
         $data->update();
         return redirect()->route('customer.index')->with('status', 'Yesss! your data is successfully updated!');
     }
