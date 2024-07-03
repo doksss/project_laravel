@@ -62,7 +62,17 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="point">
+                    @php
+                    $tax = 11/100 * $total;
+                    $grandTotal = $total + $tax;
+                    $point = Auth::user()->point;
+                    if($total>=100000 && $point > 0){
+                    @endphp
                     <button onclick="redeemPoints()" class="btn-minus"><i class="fa fa-minus"></i> Redeem points</button>
+                    @php
+                    }
+                    @endphp
+                    
                 </div>
             </div>
             <div class="col-md-12">
@@ -70,10 +80,7 @@
                     <div class="cart-content">
                         <h1>Cart Summary</h1>
                         <h4>Sub Total: <span id="subTotal">{{'IDR ' . $total}}</span></h4>
-                        @php
-                        $tax = 11/100 * $total;
-                        $grandTotal = $total + $tax;
-                        @endphp
+
                         <h4>Tax: <span id="tax">{{'IDR ' . $tax}}</span></h4>
                         <h2>Grand Total: <span id="grandTotal">{{ 'IDR ' . $grandTotal }}</span></h2>
                     </div>
@@ -129,7 +136,7 @@
                 const total = data.total;
                 const tax = 0.11 * total;
                 const grandTotal = total + tax;
-                
+
                 $('#subTotal').text('IDR ' + total);
                 $('#tax').text('IDR ' + tax.toFixed(2));
                 $('#grandTotal').text('IDR ' + grandTotal.toFixed(2));
