@@ -13,6 +13,7 @@ use App\Models\Product;
 use App\Models\Transaction;
 use App\Models\Type;
 use App\Models\TypeProduct;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -137,6 +138,7 @@ Route::middleware(['auth'])->group(function(){
     Route::get('laralux/cart/add/{id}',[FrontEndController::class,'addToCart'])->name('addCart');
     Route::get('laralux/cart/delete/{id}',[FrontEndController::class,'deleteFromCart'])->name('delFromCart');
     Route::post('laralux/cart/addQty',[FrontEndController::class,'addQuantity'])->name('addQty');
+    Route::post('laralux/cart/redeemPoints',[FrontEndController::class,'redeemPoints'])->name('redeemPoints');
     Route::post('laralux/cart/reduceQty',[FrontEndController::class,'reduceQuantity'])->name('redQty');
     Route::get('laralux/cart/checkout',[TransactionController::class,'checkout'])->name('checkout');
     Route::get('/laralux/{laralux}', [FrontEndController::class, 'show'])->name('laralux.show');

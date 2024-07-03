@@ -38,12 +38,11 @@
                                 <button onclick="addQty({{$item['id']}})" class="btn-plus"><i class="fa fa-plus"></i></button>
                             </div>
                         </td>
-                        <td>{{ 'IDR '.$item['quantity']* $item['price'] }}</td>
-                        <!-- <td>{{ $item['type_product'] }}</td> -->
+                        <td>{{ 'IDR '.$item['quantity'] * $item['price'] }}</td>
                         <td><a class="btn btn-danger" href="{{route('delFromCart',$item['id'])}}"><i class="fa fa-trash"></i></a></td>
                     </tr>
                     @php
-                    $total+= $item['quantity']* $item['price'];
+                    $total += $item['quantity'] * $item['price'];
                     @endphp
                     @endforeach
                     @else
@@ -62,34 +61,31 @@
     <div class="cart-page-inner">
         <div class="row">
             <div class="col-md-12">
-                <div class="coupon">
-                    <input type="text" placeholder="Coupon Code">
-                    <button>Apply Code</button>
+                <div class="point">
+                    <button onclick="redeemPoints()" class="btn-minus"><i class="fa fa-minus"></i> Redeem points</button>
                 </div>
             </div>
             <div class="col-md-12">
                 <div class="cart-summary">
                     <div class="cart-content">
                         <h1>Cart Summary</h1>
-                        <h4>Sub Total: <span>{{'IDR ' . $total}}</span></h4>
+                        <h4>Sub Total: <span id="subTotal">{{'IDR ' . $total}}</span></h4>
                         @php
                         $tax = 11/100 * $total;
-                        $total += $tax;
+                        $grandTotal = $total + $tax;
                         @endphp
-                        <h4>Tax: <span>{{'IDR ' . $tax}}</span></h4>
-                        <h2>Grand Total: <span>{{ 'IDR ' . $total }}</span></h2>
+                        <h4>Tax: <span id="tax">{{'IDR ' . $tax}}</span></h4>
+                        <h2>Grand Total: <span id="grandTotal">{{ 'IDR ' . $grandTotal }}</span></h2>
                     </div>
                     <div class="cart-btn">
-                        <a class="btn btn-xs" href="{{ route('laralux.index') }}">Continue Shopping</button>
-                            <a class="btn btn-xs" href="{{ route('checkout') }}">Checkout</a>
+                        <a class="btn btn-xs" href="{{ route('laralux.index') }}">Continue Shopping</a>
+                        <a class="btn btn-xs" href="{{ route('checkout') }}">Checkout</a>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
-
-
 @endsection
 
 @section('js')
@@ -97,9 +93,9 @@
     function redQty(id) {
         $.ajax({
             type: 'POST',
-            url: '{{route("redQty")}}',
+            url: '{{ route("redQty") }}',
             data: {
-                '_token': '<?php echo csrf_token() ?>',
+                '_token': '{{ csrf_token() }}',
                 'id': id
             },
             success: function(data) {
@@ -111,13 +107,33 @@
     function addQty(id) {
         $.ajax({
             type: 'POST',
-            url: '{{route("addQty")}}',
+            url: '{{ route("addQty") }}',
             data: {
-                '_token': '<?php echo csrf_token() ?>',
+                '_token': '{{ csrf_token() }}',
                 'id': id
             },
             success: function(data) {
                 location.reload();
+            }
+        });
+    }
+
+    function redeemPoints() {
+        $.ajax({
+            type: 'POST',
+            url: '{{ route("redeemPoints") }}',
+            data: {
+                '_token': '{{ csrf_token() }}'
+            },
+            success: function(data) {
+                const total = data.total;
+                const tax = 0.11 * total;
+                const grandTotal = total + tax;
+                
+                $('#subTotal').text('IDR ' + total);
+                $('#tax').text('IDR ' + tax.toFixed(2));
+                $('#grandTotal').text('IDR ' + grandTotal.toFixed(2));
+                alert('Points redeemed!');
             }
         });
     }

@@ -8,6 +8,7 @@ use App\Models\TypeProduct;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use App\Models\Transaction;
+use App\Models\User;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 
@@ -72,48 +73,67 @@ class FrontEndController extends Controller
     }
 
 
-    public function addQuantity(Request $request){
+    public function addQuantity(Request $request)
+    {
         $id = $request->id;
         $cart = session()->get('cart');
         $product = Product::find($cart[$id]['id']);
-        if(isset($cart[$id])){
+        if (isset($cart[$id])) {
             $jumlahawal = $cart[$id]['quantity'];
-            $jumlahpesan = $jumlahawal+1;
-            if($jumlahpesan<=$product->available_room){
+            $jumlahpesan = $jumlahawal + 1;
+            if ($jumlahpesan <= $product->available_room) {
                 $cart[$id]['quantity']++;
-            }else{
-                return redirect()->back()->with('error','jumlah kamar tidak tersedia');
+            } else {
+                return redirect()->back()->with('error', 'jumlah kamar tidak tersedia');
             }
         }
         session()->forget('cart');
-        session()->put('cart',$cart);
+        session()->put('cart', $cart);
     }
-    public function reduceQuantity(Request $request){
+    public function reduceQuantity(Request $request)
+    {
         $id = $request->id;
         $cart = session()->get('cart');
-        if(isset($cart[$id])){
-            if($cart[$id]['quantity']>0){
+        if (isset($cart[$id])) {
+            if ($cart[$id]['quantity'] > 0) {
                 $cart[$id]['quantity']--;
             }
         }
         session()->forget('cart');
-        session()->put('cart',$cart);
+        session()->put('cart', $cart);
+    }
+
+    public function redeemPoints(Request $request)
+    {
+        $cart = session()->get('cart', []);
+        $total = 0;
+        foreach ($cart as $item) {
+            $total += $item['quantity'] * $item['price'];
+        }
+        $total -= 100000;
+        if ($total < 0) {
+            $total = 0;
+        }
+        session(['total' => $total]);
+
+        return response()->json(['total' => $total]);
     }
 
 
-    public function cart(){
+
+    public function cart()
+    {
         return view('frontend.cart');
     }
 
-    public function deleteFromCart($id){
+    public function deleteFromCart($id)
+    {
         $cart = session()->get('cart');
-        if(isset($cart[$id])){
+        if (isset($cart[$id])) {
             unset($cart[$id]);
         }
         session()->forget('cart');
-        session()->put('cart',$cart);
-        return redirect()->back()->with("status","Produk telah dibuang dari cart");
+        session()->put('cart', $cart);
+        return redirect()->back()->with("status", "Produk telah dibuang dari cart");
     }
-
-    
 }
