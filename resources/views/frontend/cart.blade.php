@@ -61,6 +61,7 @@
     <div class="cart-page-inner">
         <div class="row">
             <div class="col-md-12">
+                @if(session('cart'))
                 <div class="point">
                     @php
                     $tax = 11/100 * $total;
@@ -74,9 +75,11 @@
                     @endphp
                     
                 </div>
+                @endif
             </div>
             <div class="col-md-12">
                 <div class="cart-summary">
+                    @if(session('cart'))
                     <div class="cart-content">
                         <h1>Cart Summary</h1>
                         <h4>Sub Total: <span id="subTotal">{{'IDR ' . $total}}</span></h4>
@@ -88,6 +91,7 @@
                         <a class="btn btn-xs" href="{{ route('laralux.index') }}">Continue Shopping</a>
                         <a class="btn btn-xs" href="{{ route('checkout') }}">Checkout</a>
                     </div>
+                    @endif
                 </div>
             </div>
         </div>
@@ -141,6 +145,8 @@
                 $('#tax').text('IDR ' + tax.toFixed(2));
                 $('#grandTotal').text('IDR ' + grandTotal.toFixed(2));
                 alert('Points redeemed!');
+
+                {{Auth::user()->point-1}}
             }
         });
     }

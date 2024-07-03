@@ -11,6 +11,7 @@ use App\Models\Transaction;
 use App\Models\User;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class FrontEndController extends Controller
 {
@@ -105,6 +106,13 @@ class FrontEndController extends Controller
 
     public function redeemPoints(Request $request)
     {
+        $user = Auth::user();
+        $iduser = $user->id;
+
+        $data = User::find($iduser);
+        $data->point = ($user->point)-1;
+        $data->update();
+
         $cart = session()->get('cart', []);
         $total = 0;
         foreach ($cart as $item) {
