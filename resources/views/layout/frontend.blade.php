@@ -55,7 +55,7 @@
                     <div class="navbar-nav mr-auto">
                         <a href="{{route('hotels.index')}}" class="nav-item nav-link">Hotel</a>
                         <a href="{{route('type.index')}}" class="nav-item nav-link">Tipe Hotel</a>
-                        <a href="{{route('product.index')}}" class="nav-item nav-link">Product</a>
+                        <a href="{{route('laralux.index')}}" class="nav-item nav-link">Product</a>
                         <a href="{{route('typeproduct.index')}}" class="nav-item nav-link">Tipe Product</a>
                         <a href="{{route('customer.index')}}" class="nav-item nav-link">Customer</a>
                         <a href="{{route('transaction.index')}}" class="nav-item nav-link">Transaction</a>
@@ -69,6 +69,9 @@
                                     @csrf
                                     <input type="submit" value="logout" class="btn btn-danger">
                                 </form>
+                                @if(Auth::check() && Auth::user()->role == "guest")
+                                    <p>Point : {{Auth::user()->point}}</p>
+                                @endif
                             </div>
                         </div>
                     </div>

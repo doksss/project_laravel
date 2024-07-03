@@ -9,8 +9,9 @@
                     <div class="col-md-12">
                         <div class="product-view-top">
                             <div class="row">
-                                <a href="{{route('transaction.create')}}" class="btn btn-success">+ New Transaction</a>
-                                <a href="#modalCreate" data-toggle="modal" class="btn btn-info">+ New Transaction (With Modals)</a>
+                                @can('delete-permission',Auth::user())
+                                <a href="#modalCreate" data-toggle="modal" class="btn btn-info">+ New Transaction</a>
+                                @endcan
                                 <div class="container">
                                     <table class="table">
                                         <thead>
@@ -62,17 +63,11 @@
                                                 </td>
                                                 <td>
                                                     @can('delete-permission',Auth::user())
-                                                    <a class="btn btn-warning" href="{{route('transaction.edit',$d->id)}}">Edit</a>
-                                                    <a class="btn btn-warning" href="#modalEditA" data-toggle="modal" onclick="getEditForm({{$d->id}})">Edit Type A</a>
+                                                    <a class="btn btn-warning" href="#modalEditA" data-toggle="modal" onclick="getEditForm({{$d->id}})">Edit</a>
                                                     @endcan
                                                 </td>
                                                 <td>
                                                     @can('delete-permission',Auth::user())
-                                                    <form method="post" action="{{route('transaction.destroy',$d->id)}}">
-                                                        @csrf
-                                                        @method('delete')
-                                                        <input type="submit" value="Delete" onclick="return confirm('Are you sure?')" class="btn btn-danger"></input>
-                                                    </form>
                                                     <a class="btn btn-danger" href="#" value="DeleteNoReload" onclick="if(confirm('Are you sure to delete {{$d->id}} ?')) deleteDataRemoveTR({{$d->id}})">Delete without reload</a>
                                                     @endcan                                                
                                                 </td>
@@ -165,6 +160,7 @@
             }
         });
     }
+
 
     function deleteDataRemoveTR(trans_id) {
         $.ajax({

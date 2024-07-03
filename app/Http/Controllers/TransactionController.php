@@ -20,7 +20,7 @@ class TransactionController extends Controller
     public function index()
     {
         $transactions = Transaction::all(); //pake Eloquent ORM
-        $customer = Customer::all();
+        $customer = User::all();
         $product = Product::all();
         $user = User::all();
         // dd($transactions);
@@ -32,7 +32,7 @@ class TransactionController extends Controller
      */
     public function create()
     {
-        $customer = Customer::all();
+        $customer = User::all();
         $product = Product::all();
         $user = User::all();
         return view('transaction.formcreate',['customer'=>$customer,'product'=>$product,'user'=>$user]);
@@ -74,7 +74,7 @@ class TransactionController extends Controller
     public function edit(string $id)
     {
         $data = Transaction::find($id);
-        $customer = Customer::all();
+        $customer = User::all();
         $product = Product::all();
         $user = User::all();
         return view('transaction.edit',['customer'=>$customer,'product'=>$product,'user'=>$user,'data'=>$data]);
@@ -116,7 +116,7 @@ class TransactionController extends Controller
     public function getEditForm(Request $request){
         $id = $request->id;
         $data = Transaction::find($id);
-        $customer = Customer::all();
+        $customer = User::all();
         $product = Product::all();
         $user = User::all();
         return response()->json(array(
@@ -149,8 +149,8 @@ class TransactionController extends Controller
         $user = Auth::user();
 
         $t = new Transaction();
-        $t->user_id = $user->id;
-        $t->customer_id = 1;
+        $t->customer_id = $user->id;
+        $t->user_id = 4;
         $t->transaction_date = Carbon::now()->toDateTimeString();
 
         $t->save();
@@ -159,11 +159,11 @@ class TransactionController extends Controller
 
         $totalpoint = $t->insertProducts($cart,$idTransactionNew);
         
-        $cust = Customer::find(1);
+        $cust = User::find($user->id);
         $point = $cust->point;
         $totalpoint+=$point;
 
-        DB::update('update customers set point=? where id=?',[$totalpoint, 1]);
+        DB::update('update users set point=? where id=?',[$totalpoint, $user->id]);
 
         session()->forget('cart');
         return redirect()->route('laralux.index')->with('status','checkout berhasil');

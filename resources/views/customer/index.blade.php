@@ -17,7 +17,7 @@
                                             <tr>
                                                 <th>ID</th>
                                                 <th>Name</th>
-                                                <th>Address</th>
+                                                <th>Email</th>
                                                 <th>Created At</th>
                                                 <th>Updated At</th>
                                                 <th>Point</th>
@@ -30,7 +30,7 @@
                                             <tr>
                                                 <td>{{$d->id}}</td>
                                                 <td>{{$d->name}}</td>
-                                                <td>{{$d->address}}</td>
+                                                <td>{{$d->email}}</td>
                                                 <td>{{$d->created_at}}</td>
                                                 <td>{{$d->updated_at}}</td>
                                                 <td>{{$d->point}}</td>

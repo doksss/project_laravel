@@ -16,7 +16,7 @@ class Transaction extends Model
     }
     public function customer():BelongsTo
     {
-        return $this->belongsTo(customer::class,'customer_id');//ini sesuai nama model ini hanya berlaku di Eloquent ORM model
+        return $this->belongsTo(user::class,'customer_id');//ini sesuai nama model ini hanya berlaku di Eloquent ORM model
     }
 
     public function products():BelongsToMany
