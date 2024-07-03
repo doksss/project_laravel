@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Customer;
+use App\Models\User;
 use Illuminate\Http\Request;
 use PDOException;
 
@@ -13,7 +14,7 @@ class CustomerController extends Controller
      */
     public function index()
     {
-        $data = Customer::all();
+        $data = User::where('role','guest')->get();
         return view('customer.index',compact('data'));
     }
 
@@ -30,9 +31,10 @@ class CustomerController extends Controller
      */
     public function store(Request $request)
     {
-        $data = new Customer();
+        $data = new User();
         $data->name = $request->get('name_cust');
         $data->address = $request->get('address_cust');
+        $data->role = 'guest'; // ensure the role is set to guest
         $data->save();
 
         //confirmation
@@ -52,7 +54,7 @@ class CustomerController extends Controller
      */
     public function edit(string $id)
     {
-        $data = Customer::find($id);
+        $data = User::where('role', 'guest')->FindOrFail($id);
         return view('customer.edit', ['data' => $data]);
     }
 
@@ -61,7 +63,7 @@ class CustomerController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $data = Customer::find($id);
+        $data = User::where('role', 'guest')->FindOrFail($id);
         $data->name = $request->get('name_cust');
         $data->address = $request->get('address_cust');
         $data->update();
@@ -74,7 +76,7 @@ class CustomerController extends Controller
     public function destroy(string $id)
     {
         try {
-            $data = Customer::find($id);
+            $data = User::where('role', 'guest')->FindOrFail($id);
             $data->delete();
             return redirect()->route('customer.index')->with('status', 'Yesss! your data is successfully Deleted!');
         } catch (PDOException $ex) {
@@ -85,7 +87,7 @@ class CustomerController extends Controller
 
     public function getEditForm(Request $request){
         $id = $request->id;
-        $data = Customer::find($id);
+        $data = User::where('role', 'guest')->FindOrFail($id);
         return response()->json(array(
             'status' => 'oke',
             'msg' => view('customer.getEditForm', compact('data'))->render()
@@ -93,7 +95,7 @@ class CustomerController extends Controller
     }
     public function deleteData(Request $request){
         $id = $request->id;
-        $data = Customer::find($id);
+        $data = User::where('role', 'guest')->FindOrFail($id);
         $data->delete();
         return response()->json(array(
             'status' => 'oke',
