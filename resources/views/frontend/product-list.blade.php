@@ -7,9 +7,9 @@
             <div class="col-lg-8">
                 <div class="row">
                     <div class="col-md-12">
-                        @if(@session('status'))
+                        <!-- @if(@session('status'))
                         <div class="alert alert-success">{{session('status')}}</div>
-                        @endif
+                        @endif -->
                         <h4>All Product Hotels</h4>
                         @can('delete-permission',Auth::user())
                         <a href="#modalCreate" data-toggle="modal" class="btn btn-info">+ New Product</a>

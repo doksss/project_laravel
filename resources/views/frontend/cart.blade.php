@@ -23,7 +23,7 @@
                         <td>
                             <div class="img">
                                 @if ($item['photo'] == NULL)
-                                <a href="#"><img src="{{asset('images/blank.jpg') }}" alt="Image"></a>
+                                <a href="#"><img src="{{asset('images/kamarA.jpeg') }}" alt="Image"></a>
                                 @else
                                 <a href="#"><img src="{{asset('images/'.$item['photo']) }}" alt="Image"></a>
                                 @endif
